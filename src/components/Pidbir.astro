@@ -1,0 +1,245 @@
+---
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import { TELEGRAM_BOT, mainPhone, brands } from "../data/site";
+
+const positions = Array.from({ length: 17 }, (_, i) => i + 1);
+const groups = [
+  { from: 1, to: 3, label: "Виробник" },
+  { from: 4, to: 9, label: "Модель, кузов, двигун" },
+  { from: 10, to: 17, label: "Рік, завод, номер" },
+];
+---
+<section id="pidbir" class="hero on-field" data-rec="R-001,R-002" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <div class="hero__head">
+      <h1 data-rec="SEO-R002" id="hero-title">Автозапчастини за VIN у Києві та по Україні</h1>
+      <p class="hero__lede">Підбираємо за VIN по оригінальних каталогах виробників, для легкових авто всіх марок.</p>
+    </div>
+
+    <div class="tool" data-tool>
+      <div class="tool__tabs" role="tablist" aria-label="Спосіб підбору">
+        <button type="button" role="tab" id="tab-vin" aria-controls="panel-vin" aria-selected="true">За VIN</button>
+        <button type="button" role="tab" id="tab-auto" aria-controls="panel-auto" aria-selected="false" tabindex="-1">За авто</button>
+      </div>
+
+      <div class="tool__panels">
+      <div class="tool__panel" id="panel-vin" role="tabpanel" aria-labelledby="tab-vin">
+        <div class="vin" data-vin>
+          <label class="vin__label" for="vin-input">VIN-код вашого авто</label>
+          <div class="vin__box">
+            <input
+              id="vin-input" class="vin__input" name="vin" type="text" maxlength="17"
+              autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text"
+              placeholder="Введіть 17 знаків VIN" aria-describedby="vin-msg"
+            />
+            <ol class="vin__ruler" aria-hidden="true" data-ruler>
+              {positions.map((n) => <li><span class="vin__tick"></span><span class="vin__pos" data-n={n}></span></li>)}
+            </ol>
+            <div class="vin__groups" aria-hidden="true">
+              {groups.map((g, i) => (
+                <span class="vin__group" data-group={i} style={`grid-column: ${g.from} / ${g.to + 1}`}>
+                  <span class="vin__group-label">{g.label}</span>
+                </span>
+              ))}
+            </div>
+            <p class="vin__legend" aria-hidden="true">1–3 виробник, 4–9 модель і двигун, 10–17 рік і номер</p>
+          </div>
+          <p class="vin__msg" id="vin-msg" aria-live="polite" data-vin-msg>VIN є у свідоцтві про реєстрацію авто. Літер I, O, Q у ньому немає.</p>
+          <div class="vin__actions">
+            <a class="btn btn--primary vin__send" href={TELEGRAM_BOT} target="_blank" rel="noopener" data-vin-send>
+              <Icon name="telegram" /><span>Надіслати VIN менеджеру</span>
+            </a>
+            <a class="btn btn--ghost-field num hero__call" href={mainPhone.href}>
+              <Icon name="phone" /><span>Подзвонити <span class="hero__phone">{mainPhone.display}</span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool__panel" id="panel-auto" role="tabpanel" aria-labelledby="tab-auto" data-panel-auto>
+        <div class="auto">
+          <div class="auto__field">
+            <label for="auto-brand">Марка авто</label>
+            <select id="auto-brand" name="brand">
+              <option value="">Оберіть марку</option>
+              {brands.map((b) => <option>{b}</option>)}
+            </select>
+          </div>
+          <FutureLink note="Підбір за авто з'явиться в повній версії сайту" class="btn auto__go">Підібрати</FutureLink>
+        </div>
+        <p class="auto__hint">Поки що найточніше надіслати VIN менеджеру в Telegram або подзвонити: підберемо деталі саме для вашої модифікації.</p>
+      </div>
+      </div>
+    </div>
+
+    <ul class="hero__facts" aria-label="Коротко про умови">
+      <li><strong class="num">1–3 дні</strong><span class="fact-long">доставка Новою поштою по Україні після відвантаження</span><span class="fact-short" aria-hidden="true">Нова пошта</span></li>
+      <li><strong>Без передоплати</strong><span class="fact-long">для більшості товарів, накладений платіж від 500 грн</span><span class="fact-short" aria-hidden="true">більшість товарів</span></li>
+      <li><strong>2 представництва</strong><span class="fact-long">у Києві: Голосіїв і Харківський район</span><span class="fact-short" aria-hidden="true">у Києві</span></li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: clamp(1.5rem, 0.5rem + 3vw, 3.5rem) clamp(3.5rem, 2rem + 5vw, 7rem); }
+  .hero__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3) var(--s-5); }
+  .hero__head { display: grid; gap: var(--s-2); }
+  h1 { font-size: var(--fs-display); max-width: 14em; }
+  .hero__lede { font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.3125rem); color: var(--color-on-field-muted); max-width: 38rem; }
+
+  /* Tabs */
+  .tool__tabs { display: none; gap: var(--s-3); margin-bottom: var(--s-2); }
+  :global(.js) .tool__tabs { display: flex; }
+  .tool__tabs [role="tab"] {
+    position: relative; background: none; border: 0; padding: .5rem 0; min-height: 2.75rem; cursor: pointer;
+    font-weight: 600; color: var(--color-on-field-muted);
+  }
+  .tool__tabs [role="tab"]::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 2px; background: var(--color-on-field);
+    transform: scaleX(0); transform-origin: left; transition: transform 240ms var(--ease-out);
+  }
+  .tool__tabs [role="tab"][aria-selected="true"] { color: var(--color-on-field); }
+  .tool__tabs [role="tab"][aria-selected="true"]::after, .tool__tabs [role="tab"]:hover::after { transform: scaleX(1); }
+  .tool__tabs [role="tab"]:hover:not([aria-selected="true"])::after { opacity: .5; }
+
+  .tool__panel + .tool__panel { margin-top: var(--s-4); }
+  /* With JS both panels share one grid cell: switching never changes the hero height */
+  :global(.js) .tool__panels { display: grid; }
+  :global(.js) .tool__panel { grid-area: 1 / 1; margin-top: 0; }
+  :global(.js) .tool__panel[hidden] { display: block; visibility: hidden; }
+  .tool__panel.is-entering { animation: panel-in 240ms var(--ease-out); }
+  @keyframes panel-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  /* VIN instrument: input and ruler share one cell width so each position sits over its character */
+  .vin { container-type: inline-size; display: flex; flex-direction: column; }
+  .vin__label { display: block; font-weight: 600; margin-bottom: .5rem; }
+  .vin__box {
+    --b: 2px;
+    --pad: clamp(.625rem, 3.2cqi, 1.5rem);
+    --cell: calc((100cqi - 2 * var(--pad) - 2 * var(--b)) / 17);
+    --fs: min(2.25rem, calc(var(--cell) * 1.12));
+    --ls: calc(var(--cell) - 0.6 * var(--fs));
+  }
+  .vin__input {
+    display: block; width: 100%; height: clamp(3.5rem, 2.6rem + 3cqi, 4.5rem);
+    border: var(--b) solid var(--color-surface); border-radius: var(--radius);
+    background: var(--color-surface); color: var(--color-text);
+    font-family: var(--font-mono); font-weight: 500; font-size: var(--fs);
+    letter-spacing: var(--ls); text-transform: uppercase;
+    padding-left: calc(var(--pad) + var(--ls) / 2);
+    padding-right: max(0px, calc(var(--pad) - var(--ls) / 2 - 2px));
+    font-variant-ligatures: none;
+  }
+  .vin__input::placeholder { color: var(--color-text-muted); text-transform: none; opacity: 1; letter-spacing: 0; }
+  /* placeholder sits at the field padding, not on the ruler grid */
+  .vin__input:placeholder-shown { padding-left: var(--pad); font-size: min(var(--fs), 1.375rem); }
+  .vin__input:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+  .vin__input[aria-invalid="true"] { border-color: var(--color-accent); }
+
+  .vin__ruler, .vin__groups {
+    display: grid; grid-template-columns: repeat(17, var(--cell));
+    padding-inline: calc(var(--pad) + var(--b)); margin: 0; list-style: none;
+  }
+  .vin__ruler { margin-top: .625rem; }
+  .vin__ruler li { display: grid; justify-items: center; gap: .25rem; }
+  .vin__tick {
+    display: block; width: 2px; height: .75rem; background: var(--color-on-field-muted);
+    transform: scaleY(.45); transform-origin: top; opacity: .7;
+    transition: transform 180ms var(--ease-out), opacity 180ms var(--ease-out), background-color 180ms var(--ease-out);
+  }
+  .vin__ruler li.is-filled .vin__tick { transform: scaleY(1); opacity: 1; background: var(--color-on-field); }
+  .vin__ruler li.is-next .vin__tick { transform: scaleY(1); opacity: 1; background: var(--color-accent); }
+  .vin__pos::before { content: attr(data-n); }
+  .vin__pos { font-family: var(--font-mono); font-size: .75rem; line-height: 1; color: var(--color-on-field-muted); font-variant-numeric: tabular-nums; }
+  .vin__ruler li.is-filled .vin__pos { color: var(--color-on-field); }
+
+  .vin__groups { margin-top: .625rem; column-gap: 0; }
+  .vin__group { position: relative; padding-top: .625rem; margin-inline: 4px; border-top: 1.5px solid var(--color-on-field-muted); transition: border-color 200ms var(--ease-out); }
+  .vin__group::before, .vin__group::after { content: ""; position: absolute; top: -1px; width: 1.5px; height: .5rem; background: var(--color-on-field-muted); transition: background-color 200ms var(--ease-out); }
+  .vin__group::before { left: 0; }
+  .vin__group::after { right: 0; }
+  .vin__group-label { display: block; font-size: .8125rem; line-height: 1.25; color: var(--color-on-field-muted); }
+  .vin__group.is-complete { border-color: var(--color-on-field); }
+  .vin__group.is-complete::before, .vin__group.is-complete::after { background: var(--color-on-field); }
+  .vin__group.is-complete .vin__group-label { color: var(--color-on-field); }
+  .vin__legend { display: none; margin-top: .5rem; font-size: .8125rem; color: var(--color-on-field-muted); }
+
+  /* Effect 2: the ruler and brackets draw in once on load (the field and H1 are visible at once) */
+  :global(.js) .vin__ruler, :global(.js) .vin__groups { animation: ruler-in 700ms var(--ease-out) 150ms both; }
+  @keyframes ruler-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+  @container (max-width: 460px) {
+    .vin__pos { display: none; }
+    .vin__group-label { display: none; }
+    .vin__legend { display: block; }
+    .vin__ruler li { gap: 0; }
+  }
+
+  .vin__msg { margin-top: var(--s-2); font-size: var(--fs-small); color: var(--color-on-field-muted); min-height: 2.6em; }
+  .vin__msg.is-error { color: var(--color-on-field); }
+  .vin__msg.is-error::before { content: ""; display: inline-block; width: .5rem; height: .5rem; margin-right: .5rem; border-radius: 1px; background: var(--color-accent); vertical-align: .1em; }
+  .vin__msg.is-ok { color: var(--color-on-field); }
+  .vin__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: var(--s-2); }
+  .vin__send { flex: 1 1 16rem; }
+  .vin__actions .btn--ghost-field { flex: 0 1 auto; }
+
+  /* By car (future function) */
+  .auto { display: flex; flex-wrap: wrap; align-items: end; gap: .75rem; }
+  .auto__field { flex: 1 1 16rem; display: grid; gap: .5rem; font-weight: 600; }
+  .auto select {
+    min-height: var(--control-h); border-radius: var(--radius); border: 2px solid var(--color-surface);
+    background: var(--color-surface); color: var(--color-text); padding-inline: 1rem; font-weight: 400;
+  }
+  .auto select:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+  .auto :global(.auto__go) {
+    min-height: var(--control-h); border: 1.5px dashed var(--color-on-field-muted); color: var(--color-on-field-muted); background: transparent;
+  }
+  .auto__hint { margin-top: var(--s-2); color: var(--color-on-field-muted); font-size: var(--fs-small); max-width: 34rem; }
+
+  /* Facts */
+  .hero__facts { display: grid; gap: var(--s-2); align-content: end; }
+  .hero__facts li { display: grid; gap: .125rem; padding-top: var(--s-2); border-top: 1px solid var(--color-on-field-muted); }
+  .hero__facts strong { font-size: var(--fs-title); font-weight: 800; letter-spacing: -0.01em; line-height: 1.15; }
+  .hero__facts span { color: var(--color-on-field-muted); font-size: var(--fs-small); }
+
+  @media (max-width: 767px) {
+    h1 { font-size: clamp(2.125rem, 1.2rem + 4.6vw, 2.75rem); }
+    .hero__head { gap: .75rem; }
+    .hero__lede { font-size: 1rem; }
+    .tool__tabs { margin-bottom: .25rem; }
+    .vin__label { margin-bottom: .375rem; }
+    .vin__actions { order: 3; }
+    .vin__msg { order: 4; min-height: 0; margin-top: .75rem; }
+    .hero__facts { gap: .75rem; }
+    .hero__facts li { grid-template-columns: auto 1fr; align-items: baseline; gap: .75rem; padding-top: .75rem; }
+    .hero__facts strong { font-size: 1.0625rem; white-space: nowrap; }
+    .hero__phone { display: none; }
+    .vin__actions .btn { width: 100%; flex-basis: 100%; }
+  }
+  @media (min-width: 1024px) {
+    .hero__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+    .hero__head { grid-column: 1 / -1; }
+    .tool { grid-column: 1 / 8; }
+    .hero__facts { grid-column: 8 / 13; }
+    .hero__facts strong { white-space: nowrap; }
+  }
+  @media (min-width: 1200px) {
+    .tool { grid-column: 1 / 9; }
+    .hero__facts { grid-column: 10 / 13; }
+  }
+  .fact-short { display: none; }
+  @media (max-width: 600px) {
+    .hero__call { display: none; }
+    /* one compact row of three facts, so it never sits half under the bottom bar */
+    .hero__facts { grid-template-columns: minmax(0, .7fr) minmax(0, 1fr) minmax(0, 1.2fr); gap: .75rem; }
+    .hero__facts li { grid-template-columns: minmax(0, 1fr); align-items: start; gap: .125rem; padding-top: .625rem; }
+    .hero__facts strong { white-space: normal; font-size: .875rem; line-height: 1.2; overflow-wrap: anywhere; }
+    .hero__facts .fact-long { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .hero__facts .fact-short { display: block; font-size: .8125rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .vin__ruler, :global(.js) .vin__groups { animation: none; }
+    .tool__panel.is-entering { animation: none; }
+  }
+</style>

@@ -1,0 +1,68 @@
+/* Hallmark · shape: tool-first index (VIN instrument, brand and catalogue indexes, terms, facts, contacts field) · genre: modern-minimal · theme: custom · job: buy · idea: "Сімнадцять знаків, і деталь знайдена: синє поле знака Автоклада стає полем, де посетитель вписує свій VIN, і вся сторінка відповідає так само точно" · vibe: "precise, calm, honest, Kyiv shop sign"
+ * paper: #F2F5F8 · accent: #F5C518 · display: Geologica · body: Geologica · hero: H1 and VIN field with a 17-position ruler on the sign-blue field, one yellow Telegram action, three terms facts · nav: sign on field, anchors, phone, Telegram · footer: blue contacts field then a narrow paper footer · imagery: client photos (category thumbnails), the logo · signature: the VIN ruler, 17 numbered positions and three brackets filled as you type
+ * axes: cool-paper/geometric-grotesk/signal-yellow · posture: committed · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: imagery, no hero photo exists; the VIN instrument and type carry the fold, client thumbnails only in the catalogue */
+/* Hallmark · waive 39b · input.vin__input 67px at 1440 · the VIN field is the signature instrument (concept.md: VIN 2.25rem mono with 17-position ruler); buttons stay 52px */
+/* Hallmark · answer 49 · Kontakty CTA «Надіслати VIN або список деталей» and Marky CTA wrap on purpose: nowrap would overflow at 320 px; every other button is nowrap */
+/* Hallmark · answer 28a · catalogue thumbnails are below the fold, the LCP element is the H1 text; lazy is intended */
+/* Line 1 of this file is the Hallmark stamp (docs/process/hallmark.md), filled from design/concept.md. */
+/* Client design tokens: ONLY from design/concept.md (veon-concept colors, fonts). */
+:root {
+  /* colour roles */
+  --color-field: #1B5DA6;
+  --color-field-deep: #123F73;
+  --color-bg: #F2F5F8;
+  --color-surface: #FBFCFD;
+  --color-text: #0F1C2B;
+  --color-text-muted: #4B5A6B;
+  --color-line: #AEBBC9;
+  --color-on-field: #F4F7FA;
+  --color-on-field-muted: #C9DAEC;
+  --color-accent: #F5C518;
+  --color-accent-strong: #E2B208;
+  --color-accent-ink: #0F1C2B;
+  --color-danger: #B42318;
+  --color-scrim: rgb(15 28 43 / 0.06);
+
+  /* type */
+  --font-display: "Geologica", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Geologica", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --fs-display: clamp(2.5rem, 1.4rem + 4.2vw, 5.25rem);
+  --fs-h2: clamp(2rem, 1.5rem + 1.6vw, 3rem);
+  --fs-title: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  --fs-body: 1.0625rem;
+  --fs-small: 0.875rem;
+  --fs-figure: clamp(3rem, 2rem + 3.6vw, 5.5rem);
+  --lh-tight: 1.04;
+  --lh-body: 1.6;
+  --tracking-tight: -0.025em;
+
+  /* space (step 8) */
+  --s-1: 0.5rem;
+  --s-2: 1rem;
+  --s-3: 1.5rem;
+  --s-4: 2.5rem;
+  --s-5: 4rem;
+  --s-6: 6rem;
+  --s-7: 9rem;
+  --space: clamp(1.25rem, 0.2rem + 4.2vw, 5rem);
+  --container: 1360px;
+  --section-gap: clamp(4.5rem, 2rem + 7vw, 9rem);
+
+  /* shape */
+  --radius: 6px;
+  --control-h: 3.25rem;
+  --header-h: 4.5rem;
+  --bar-h: 4rem;
+  --line: 1px solid var(--color-line);
+
+  /* motion */
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --dur: 500ms;
+  --dur-fast: 200ms;
+}
+
+@media (max-width: 767px) {
+  :root { --header-h: 4rem; }
+}

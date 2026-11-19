@@ -1,0 +1,151 @@
+---
+import Icon from "./Icon.astro";
+import { TELEGRAM_BOT, mainPhone } from "../data/site";
+
+// Facts: B-F013, B-F014, B-F015, company.products_services[3..5]
+const panels = [
+  {
+    id: "dostavka",
+    title: "Доставка",
+    figure: "1–3 дні",
+    lead: "Нова пошта по всій Україні, рахуючи від відвантаження зі складу.",
+    items: [
+      "Безкоштовно до окремих відділень Нової пошти в Дніпрі, Львові, Одесі й Харкові, а в Києві до наших представництв і відділень Нової пошти.",
+      "В інших випадках доставка за тарифами перевізника.",
+      "Строк відвантаження залежить від складу, частина позицій їде до 3 тижнів. Точний строк менеджер назве до оплати.",
+    ],
+    note: "Кур'єр по Києву та Укрпошта зараз тимчасово недоступні.",
+  },
+  {
+    id: "oplata",
+    title: "Оплата",
+    figure: "від 500 грн",
+    lead: "Накладений платіж Нової пошти: платите, коли отримали посилку.",
+    items: [
+      "Більшість товарів можна замовити без передоплати.",
+      "Картка Visa або Mastercard через NovaPay, безготівковий розрахунок для компаній.",
+      "Комісія Нової пошти за накладений платіж 20 грн + 2 %.",
+    ],
+    note: "Передоплата потрібна лише для товарів зі строком постачання від 4 днів. Оплата тільки в гривні.",
+  },
+  {
+    id: "povernennia",
+    title: "Повернення і гарантія",
+    figure: "14 днів",
+    lead: "На повернення, якщо товар не встановлювали і він у цілій упаковці.",
+    items: [
+      "Гарантія від 30 календарних днів, залежно від товару.",
+      "Претензію розглядаємо 5 робочих днів, експертиза до 30 днів (для товарів з-за кордону до 60).",
+    ],
+    note: "Гарантія діє за умови встановлення на сертифікованому СТО і не поширюється на витратні матеріали та електрику.",
+  },
+];
+---
+<section id="umovy" class="section umovy" data-rec="R-003,R-009" aria-labelledby="umovy-title">
+  <div class="container">
+    <div class="umovy__head">
+      <h2 id="umovy-title">Як отримати й оплатити</h2>
+      <p>Умови коротко і чесно, разом з обмеженнями.</p>
+    </div>
+
+    <div class="terms" data-terms>
+      <div class="terms__tabs" role="tablist" aria-label="Умови">
+        {panels.map((p, i) => (
+          <button type="button" role="tab" id={`tab-${p.id}`} aria-controls={p.id} aria-selected={i === 1 ? "true" : "false"} tabindex={i === 1 ? "0" : "-1"}>{p.title}</button>
+        ))}
+      </div>
+
+      {panels.map((p) => (
+        <section class="terms__panel" id={p.id} aria-labelledby={`h-${p.id}`} data-panel>
+          <h3 class="terms__title" id={`h-${p.id}`} data-toggle-host>{p.title}</h3>
+          <div class="terms__body" id={`body-${p.id}`} data-body>
+            <p class="terms__figure num" data-reveal>{p.figure}</p>
+            <div class="terms__text">
+              <p class="terms__lead">{p.lead}</p>
+              <ul class="terms__items">
+                {p.items.map((t) => <li>{t}</li>)}
+              </ul>
+              <p class="terms__note"><strong>Зверніть увагу.</strong> {p.note}</p>
+            </div>
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <div class="umovy__cta">
+      <p>Залишились питання щодо доставки чи оплати?</p>
+      <div class="umovy__actions">
+        <a class="btn btn--ghost" href={TELEGRAM_BOT} target="_blank" rel="noopener"><Icon name="telegram" /><span>Написати в Telegram</span></a>
+        <a class="btn btn--ghost num" href={mainPhone.href}><Icon name="phone" /><span>{mainPhone.display}</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .umovy { padding-bottom: var(--s-6); }
+  .umovy__head { display: grid; gap: var(--s-2); margin-bottom: var(--s-4); }
+  .umovy__head p { color: var(--color-text-muted); font-size: 1.125rem; }
+
+  /* Tabs exist only with scripting on wide screens; without JS every panel is open */
+  .terms__tabs { display: none; }
+  .terms__panel { border-top: var(--line); }
+  .terms__panel:last-child { border-bottom: 0; }
+  .terms__title { padding-block: var(--s-3) var(--s-2); }
+  .terms__title :global(button) {
+    display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 1rem;
+    min-height: 3rem; padding: 0; background: none; border: 0; cursor: pointer; text-align: left;
+    font: inherit; color: inherit;
+  }
+  .terms__title :global(button)::after {
+    content: ""; flex: none; width: .75rem; height: .75rem; margin-right: .25rem;
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: translateY(-25%) rotate(45deg); transition: transform 240ms var(--ease-out);
+  }
+  .terms__title :global(button[aria-expanded="true"])::after { transform: translateY(25%) rotate(225deg); }
+  .terms__title :global(button):hover { color: var(--color-field); }
+
+  .terms__body { display: grid; gap: var(--s-3); padding-bottom: var(--s-4); }
+  .terms__body[hidden] { display: none; }
+  .terms__body.is-entering { animation: terms-in 240ms var(--ease-out); }
+  @keyframes terms-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .terms__figure { font-size: var(--fs-figure); font-weight: 800; letter-spacing: -0.035em; line-height: 1; color: var(--color-field); white-space: nowrap; }
+  .terms__text { display: grid; gap: var(--s-2); max-width: 40rem; }
+  .terms__lead { font-size: var(--fs-title); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em; }
+  .terms__items { display: grid; gap: .625rem; }
+  .terms__items li { position: relative; padding-left: 1.25rem; }
+  .terms__items li::before { content: ""; position: absolute; left: 0; top: .72em; width: .5rem; height: 2px; background: var(--color-field); }
+  .terms__note { padding: var(--s-2) 0 0; border-top: var(--line); }
+  .terms__note strong { font-weight: 600; }
+
+  .umovy__cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-2); margin-top: 0; padding-top: var(--s-3); border-top: var(--line); }
+  .umovy__cta p { font-size: var(--fs-title); font-weight: 600; letter-spacing: -0.01em; }
+  .umovy__actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+  @media (min-width: 900px) {
+    :global(.js) .terms__tabs { display: flex; gap: var(--s-4); border-bottom: var(--line); }
+    .terms__tabs [role="tab"] {
+      position: relative; padding: var(--s-2) 0; min-height: 3rem; background: none; border: 0; cursor: pointer;
+      font-size: var(--fs-title); font-weight: 600; letter-spacing: -0.01em; color: var(--color-text-muted);
+    }
+    .terms__tabs [role="tab"]::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: var(--color-field);
+      transform: scaleX(0); transform-origin: left; transition: transform 240ms var(--ease-out);
+    }
+    .terms__tabs [role="tab"]:hover { color: var(--color-text); }
+    .terms__tabs [role="tab"][aria-selected="true"] { color: var(--color-text); }
+    .terms__tabs [role="tab"][aria-selected="true"]::after { transform: scaleX(1); }
+
+    :global(.js) .terms { display: grid; }
+    :global(.js) .terms__tabs { grid-area: 1 / 1; }
+    :global(.js) .terms__panel { border: 0; grid-area: 2 / 1; }
+    :global(.js) .terms__panel[hidden] { display: block; visibility: hidden; }
+    .terms__panel:last-child { border-bottom: 0; }
+    :global(.js) .terms__title { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; padding: 0; }
+    .terms__body { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-5); padding-block: var(--s-5) var(--s-4); align-items: start; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .terms__body.is-entering { animation: none; }
+  }
+</style>

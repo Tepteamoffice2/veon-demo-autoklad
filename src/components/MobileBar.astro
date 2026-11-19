@@ -1,0 +1,26 @@
+---
+import Icon from "./Icon.astro";
+import { TELEGRAM_BOT, mainPhone } from "../data/site";
+---
+<div class="mobile-bar" data-rec="R-005">
+  <a class="btn btn--ghost-field" href={mainPhone.href}><Icon name="phone" /><span>Подзвонити</span></a>
+  <a class="btn mobile-bar__tg" href={TELEGRAM_BOT} target="_blank" rel="noopener"><Icon name="telegram" /><span>Telegram</span></a>
+</div>
+
+<style>
+  .mobile-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    display: grid; grid-template-columns: 1fr 1fr; gap: .5rem;
+    padding: .5rem var(--space) calc(.5rem + env(safe-area-inset-bottom));
+    background: var(--color-field-deep); color: var(--color-on-field);
+  }
+  .mobile-bar .btn { min-height: 3rem; padding-inline: .75rem; min-width: 0; }
+  .mobile-bar__tg { background: var(--color-on-field); color: var(--color-field-deep); }
+  .mobile-bar__tg:hover { background: var(--color-surface); }
+  .mobile-bar :focus-visible { outline-color: var(--color-accent); }
+  :global(body) { padding-bottom: calc(var(--bar-h) + env(safe-area-inset-bottom)); }
+  @media (min-width: 768px) {
+    .mobile-bar { display: none; }
+    :global(body) { padding-bottom: 0; }
+  }
+</style>

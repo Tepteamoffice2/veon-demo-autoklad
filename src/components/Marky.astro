@@ -1,0 +1,52 @@
+---
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import { brands, SOON, TELEGRAM_BOT } from "../data/site";
+---
+<section id="marky" class="section marky" data-rec="R-004" aria-labelledby="marky-title">
+  <div class="container marky__grid">
+    <div class="marky__head">
+      <h2 id="marky-title">Оберіть марку авто</h2>
+      <p>Запчастини для легкових авто всіх марок. Тут марки з нашого каталогу, решту підберемо за VIN.</p>
+      <a class="btn btn--ghost marky__cta" href={TELEGRAM_BOT} target="_blank" rel="noopener">
+        <Icon name="telegram" /><span>Немає марки? Надішліть VIN</span>
+      </a>
+    </div>
+    <ul class="marky__list" aria-label="Марки авто">
+      {brands.map((b) => (
+        <li><FutureLink note={SOON} class="marky__item">{b}</FutureLink></li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .marky { padding-bottom: calc(var(--section-gap) * 0.8); }
+  .marky__grid { display: grid; gap: var(--s-4); }
+  .marky__head { display: grid; gap: var(--s-2); align-content: start; }
+  .marky__head p { color: var(--color-text-muted); font-size: 1.125rem; max-width: 26rem; }
+  .marky__cta { justify-self: start; margin-top: var(--s-1); white-space: normal; padding-block: .75rem; }
+
+  .marky__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-3); }
+  .marky__list li { border-bottom: var(--line); }
+  .marky__list :global(.marky__item) {
+    display: flex; min-height: 3rem; width: 100%; align-items: center;
+    font-size: 1.1875rem; font-weight: 600; letter-spacing: -0.01em;
+  }
+  .marky__list :global(.marky__item)::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--color-field);
+    transform: scaleX(0); transform-origin: left; transition: transform 220ms var(--ease-out);
+  }
+  .marky__list :global(.marky__item:hover), .marky__list :global(.marky__item:focus-visible) { color: var(--color-field); }
+  .marky__list :global(.marky__item:hover)::after, .marky__list :global(.marky__item:focus-visible)::after { transform: scaleX(1); }
+  .marky__list :global(.marky__item:active) { background: var(--color-scrim); }
+
+  @media (min-width: 1024px) {
+    .marky__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s-3); }
+    .marky__head { grid-column: 1 / 5; align-self: start; position: sticky; top: calc(var(--header-h) + var(--s-4)); }
+    .marky__list { grid-column: 5 / 13; display: flex; flex-wrap: wrap; gap: .25rem clamp(1.25rem, 0.5rem + 1.5vw, 2.25rem); }
+    .marky__list li { border-bottom: 0; }
+    .marky__list :global(.marky__item) { width: auto; min-height: 0; padding-block: .125rem; font-size: clamp(1.75rem, 0.9rem + 1.6vw, 2.625rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+    .marky__list :global(.marky__item)::after { bottom: .125rem; }
+  }
+</style>

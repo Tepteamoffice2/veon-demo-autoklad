@@ -1,0 +1,60 @@
+---
+// Facts only: B-F001, B-F003 (виробники), B-F005, B-F006, B-F017. No assortment counts (R-006).
+const figures = [
+  { key: "2011", text: "запуск інтернет-магазину. Сама компанія працює в Києві з 2010 року." },
+  { key: "1000+", text: "виробників, чиї товари є в нашому каталозі." },
+];
+const facts = [
+  { key: "Україна і світ", text: "Склади великих дистриб'юторів України, рідкісні позиції привозимо зі складів у Європі, Азії та США." },
+  { key: "Легально", text: "Товари легально ввезені в Україну та сертифіковані." },
+  { key: "Кешбек", text: "Накопичувальна бонусна система для зареєстрованих клієнтів." },
+];
+---
+<section id="pro-nas" class="section pro-nas" aria-labelledby="pro-nas-title">
+  <div class="container pro-nas__grid">
+    <h2 id="pro-nas-title">У Києві з 2010 року</h2>
+    <div class="pro-nas__body">
+      <dl class="pro-nas__figures">
+        {figures.map((f) => (
+          <div class="pro-nas__figure">
+            <dt class="num">{f.key}</dt>
+            <dd>{f.text}</dd>
+          </div>
+        ))}
+      </dl>
+      <dl class="pro-nas__facts">
+        {facts.map((f) => (
+          <div class="pro-nas__fact">
+            <dt>{f.key}</dt>
+            <dd>{f.text}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pro-nas { padding-top: 0; }
+  .pro-nas__grid { display: grid; gap: var(--s-4); border-top: var(--line); padding-top: var(--s-6); }
+  .pro-nas h2 { text-wrap: balance; font-size: clamp(2.5rem, 1.6rem + 3.4vw, 4.5rem); max-width: 9em; }
+  .pro-nas__body { display: grid; gap: var(--s-5); }
+  .pro-nas__figures { display: grid; gap: var(--s-4); }
+  .pro-nas__figure { display: grid; gap: var(--s-2); align-content: start; }
+  .pro-nas__figure dt { font-size: var(--fs-figure); font-weight: 800; letter-spacing: -0.035em; line-height: 1; height: 1em; overflow: visible; color: var(--color-field); }
+  .pro-nas__figure dd { font-size: var(--fs-title); font-weight: 600; letter-spacing: -0.01em; line-height: 1.35; max-width: 22rem; }
+  .pro-nas__facts { display: grid; gap: var(--s-3); }
+  .pro-nas__fact { display: grid; gap: .375rem; align-content: start; padding-top: var(--s-2); border-top: var(--line); }
+  .pro-nas__fact dt { font-size: var(--fs-title); font-weight: 800; letter-spacing: -0.015em; line-height: 1.15; }
+  .pro-nas__fact dd { color: var(--color-text-muted); }
+
+  @media (min-width: 768px) {
+    .pro-nas__figures { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-4); }
+    .pro-nas__facts { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--s-3); }
+  }
+  @media (min-width: 1024px) {
+    .pro-nas__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s-3); }
+    .pro-nas h2 { grid-column: 1 / 5; align-self: start; }
+    .pro-nas__body { grid-column: 5 / 13; }
+  }
+</style>

@@ -1,0 +1,133 @@
+---
+import Icon from "./Icon.astro";
+import { TELEGRAM_BOT, mainPhone, phones } from "../data/site";
+import { asset } from "../lib/asset";
+
+const nav = [
+  { href: "#pidbir", label: "Підбір за VIN" },
+  { href: "#marky", label: "Марки" },
+  { href: "#katalog", label: "Каталог" },
+  { href: "#umovy", label: "Доставка і оплата" },
+  { href: "#povernennia", label: "Гарантія" },
+  { href: "#kontakty", label: "Контакти" },
+];
+---
+<header class="site-header on-field" data-header data-rec="R-005,R-009">
+  <div class="container site-header__inner">
+    <a class="brand" href="#top" aria-label="Автоклад, на початок сторінки">
+      <picture>
+        <source srcset={asset("img/autoklad-logo.webp")} type="image/webp" />
+        <img src={asset("img/autoklad-logo.png")} width="120" height="180" alt="" fetchpriority="high" />
+      </picture>
+      <span class="brand__caption" aria-hidden="true">Інтернет-магазин<br />автозапчастин</span>
+    </a>
+
+    <nav class="nav-desktop" aria-label="Розділи сторінки">
+      <ul>
+        {nav.map((n) => <li><a class="rule-link" href={n.href}>{n.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a class="header-phone num" href={mainPhone.href}>
+        <Icon name="phone" />
+        <span>{mainPhone.display}</span>
+      </a>
+      <a class="btn btn--ghost-field header-tg" data-rec="S-R007" href={TELEGRAM_BOT} target="_blank" rel="noopener">
+        <Icon name="telegram" /><span>Telegram</span>
+      </a>
+      <a class="icon-btn header-call" href={mainPhone.href} aria-label={`Подзвонити ${mainPhone.display}`}>
+        <Icon name="phone" />
+      </a>
+      <details class="menu" data-menu>
+        <summary class="icon-btn" aria-label="Меню">
+          <Icon name="menu" class="menu__open" />
+          <Icon name="close" class="menu__close" />
+        </summary>
+        <div class="menu__panel">
+          <nav aria-label="Меню розділів">
+            <ul class="menu__list">
+              {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+            </ul>
+          </nav>
+          <div class="menu__contacts">
+            {phones.map((p) => (
+              <a class="num" href={p.href}><Icon name="phone" /><span>{p.display}</span>{p.note && <span class="menu__note">{p.note}</span>}</a>
+            ))}
+            <a href={TELEGRAM_BOT} target="_blank" rel="noopener"><Icon name="telegram" /><span>Telegram-бот для замовлень</span></a>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .site-header.is-scrolled { background: var(--color-surface); color: var(--color-text); box-shadow: 0 1px 0 var(--color-line); }
+  .site-header__inner { display: flex; align-items: center; gap: var(--s-3); min-height: var(--header-h); }
+
+  .brand { display: inline-flex; align-items: center; gap: .75rem; text-decoration: none; flex: none; border-radius: var(--radius); }
+  .brand img { width: auto; height: 3.25rem; }
+  .brand__caption { font-size: var(--fs-small); line-height: 1.25; font-weight: 600; }
+
+  .nav-desktop { display: none; margin-inline: auto; }
+  .nav-desktop ul { display: flex; gap: clamp(1rem, 0.2rem + 1.4vw, 2rem); }
+  .nav-desktop a { display: inline-block; padding-block: .5rem; font-weight: 600; font-size: .9375rem; white-space: nowrap; }
+
+  .site-header__actions { display: flex; align-items: center; gap: var(--s-2); margin-left: auto; }
+  .header-phone { display: none; align-items: center; gap: .5rem; font-weight: 600; text-decoration: none; white-space: nowrap; padding-block: .5rem; }
+  .header-phone:hover span { text-decoration: underline; text-underline-offset: 4px; }
+  .header-tg { display: none; min-height: 2.75rem; padding-inline: 1rem; }
+  .is-scrolled .header-tg { border-color: var(--color-field); color: var(--color-field); }
+  .is-scrolled .header-tg:hover { background: var(--color-field); color: var(--color-on-field); }
+  .is-scrolled :focus-visible { outline-color: var(--color-field); }
+
+  .icon-btn {
+    display: inline-grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: var(--radius);
+    border: 1.5px solid var(--color-on-field-muted); cursor: pointer; list-style: none; color: inherit;
+    transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+  .icon-btn:hover { background: var(--color-field-deep); }
+  .is-scrolled .icon-btn { border-color: var(--color-text-muted); }
+  .is-scrolled .icon-btn:hover { background: var(--color-bg); }
+  .icon-btn::-webkit-details-marker { display: none; }
+
+  .menu { position: static; }
+  .menu > summary { list-style: none; }
+  .menu :global(.menu__close) { display: none; }
+  .menu[open] :global(.menu__open) { display: none; }
+  .menu[open] :global(.menu__close) { display: block; }
+  .menu__panel {
+    position: absolute; left: 0; right: 0; top: 100%;
+    background: var(--color-field-deep); color: var(--color-on-field);
+    padding: var(--s-2) var(--space) var(--s-4);
+    max-height: calc(100dvh - var(--header-h)); overflow-y: auto;
+  }
+  .menu__list a { white-space: nowrap; display: flex; align-items: center; min-height: 3.25rem; font-size: 1.25rem; font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--color-field); }
+  .menu__contacts { display: grid; gap: .25rem; margin-top: var(--s-3); }
+  .menu__contacts a { display: flex; align-items: center; gap: .75rem; min-height: 2.75rem; text-decoration: none; font-weight: 600; }
+  .menu__note { font-weight: 400; color: var(--color-on-field-muted); font-size: var(--fs-small); }
+  .menu__panel :focus-visible { outline-color: var(--color-accent); }
+
+  @media (max-width: 419px) {
+    .brand__caption { display: none; }
+  }
+  @media (min-width: 768px) {
+    .header-call { display: none; }
+    .header-phone { display: inline-flex; }
+    .header-tg { display: inline-flex; }
+    .brand img { height: 3.5rem; }
+  }
+  @media (min-width: 1200px) {
+    .nav-desktop { display: block; }
+    .menu { display: none; }
+    .brand__caption { display: none; }
+  }
+  @media (min-width: 1360px) {
+    .brand__caption { display: inline; }
+  }
+</style>

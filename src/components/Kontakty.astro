@@ -1,0 +1,74 @@
+---
+import Icon from "./Icon.astro";
+import { TELEGRAM_BOT, phones, mainPhone, email, hours, stores } from "../data/site";
+---
+<section id="kontakty" class="section kontakty on-field" data-rec="R-005" aria-labelledby="kontakty-title">
+  <div class="container">
+    <h2 id="kontakty-title">Два представництва в Києві</h2>
+    <div class="kontakty__grid">
+      {stores.map((s) => (
+        <article class="store">
+          <h3 class="store__district">{s.district}</h3>
+          <p class="store__street">{s.street}</p>
+          <dl class="store__hours">
+            {hours.map((h) => (<div><dt>{h.days}</dt><dd class="num">{h.time}</dd></div>))}
+          </dl>
+          <div class="store__actions">
+            <a class="btn btn--ghost-field" href={s.map} target="_blank" rel="noopener"><Icon name="route" /><span>Маршрут</span></a>
+            <a class="btn btn--ghost-field" href={mainPhone.href}><Icon name="phone" /><span>Подзвонити</span></a>
+          </div>
+        </article>
+      ))}
+
+      <div class="kontakty__channels">
+        <ul class="channels">
+          {phones.map((p) => (
+            <li><a class="channels__link num" href={p.href}>{p.display}</a>{p.note && <span>{p.note}</span>}</li>
+          ))}
+          <li><a class="channels__link" href={`mailto:${email}`}>{email}</a></li>
+          <li><a class="channels__link" href={TELEGRAM_BOT} target="_blank" rel="noopener">Telegram-бот</a><span>замовлення і питання менеджеру</span></li>
+        </ul>
+        <a class="btn btn--primary kontakty__cta" href={TELEGRAM_BOT} target="_blank" rel="noopener">
+          <Icon name="telegram" /><span>Надіслати VIN або список деталей</span>
+        </a>
+        <p class="kontakty__note">Наявність товару в представництві уточнюйте по телефону або в Telegram перед візитом.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .kontakty h2 { text-wrap: balance; font-size: clamp(2.25rem, 1.5rem + 2.6vw, 3.75rem); max-width: 12em; margin-bottom: var(--s-5); }
+  .kontakty__grid { display: grid; gap: var(--s-5); }
+  .store { display: grid; gap: var(--s-1); align-content: start; padding-top: var(--s-3); border-top: 1px solid var(--color-on-field-muted); }
+  .store__district { text-wrap: balance; font-size: clamp(2rem, 1.5rem + 1.6vw, 3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+  .store__street { font-size: var(--fs-title); font-weight: 600; letter-spacing: -0.01em; }
+  .store__hours { display: grid; gap: .25rem; margin-top: var(--s-2); color: var(--color-on-field-muted); }
+  .store__hours div { display: grid; grid-template-columns: 4rem 1fr; }
+  .store__hours dd { color: var(--color-on-field); }
+  .store__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: var(--s-3); }
+
+  .kontakty__channels { display: grid; gap: var(--s-3); align-content: start; padding-top: var(--s-3); border-top: 1px solid var(--color-on-field-muted); }
+  .channels { display: grid; gap: var(--s-2); }
+  .channels li { display: grid; gap: .125rem; }
+  .channels li span { color: var(--color-on-field-muted); font-size: var(--fs-small); }
+  .channels__link { justify-self: start; font-size: var(--fs-title); font-weight: 600; letter-spacing: -0.01em; text-decoration: none; overflow-wrap: anywhere; }
+  .channels__link:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .kontakty__cta { justify-self: stretch; white-space: normal; text-align: center; padding-block: .75rem; }
+  .kontakty__note { font-size: var(--fs-small); color: var(--color-on-field-muted); }
+
+  @media (min-width: 768px) {
+    .kontakty__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-4); }
+    .kontakty__channels { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+    .kontakty__cta, .kontakty__note { grid-column: 2; }
+    .channels { grid-row: 1 / span 2; }
+  }
+  @media (min-width: 1200px) {
+    .kontakty__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s-3); }
+    .store:nth-child(1) { grid-column: 1 / 5; }
+    .store:nth-child(2) { grid-column: 5 / 9; }
+    .kontakty__channels { grid-column: 9 / 13; grid-template-columns: minmax(0, 1fr); }
+    .kontakty__cta, .kontakty__note { grid-column: auto; }
+    .channels { grid-row: auto; }
+  }
+</style>

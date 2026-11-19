@@ -1,0 +1,14 @@
+---
+// Small line icons (decorative: always next to a text label, aria-hidden).
+interface Props { name: "phone" | "telegram" | "route" | "mail" | "menu" | "close" | "copy"; class?: string }
+const { name, class: cls } = Astro.props;
+---
+<svg class={cls} viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  {name === "phone" && <path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11.5 11.5 0 0 0 7.2 7.2l1.4-2.1 4.2 1.6V19a1.5 1.5 0 0 1-1.6 1.5C10.6 20 4 13.4 3.5 5.1A1.5 1.5 0 0 1 5 3.5Z" />}
+  {name === "telegram" && <path d="M21 4 3 11.2l6.3 2.2L18 7.5l-6.6 7.3L18.6 20 21 4ZM9.3 13.4v5.8l3-3.1" />}
+  {name === "route" && <><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z" /><circle cx="12" cy="10" r="2.4" /></>}
+  {name === "mail" && <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3.5 6.5 8.5 6.5 8.5-6.5" /></>}
+  {name === "menu" && <path d="M4 7h16M4 12h16M4 17h16" />}
+  {name === "close" && <path d="M6 6l12 12M18 6 6 18" />}
+  {name === "copy" && <><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8" /></>}
+</svg>

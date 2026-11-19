@@ -1,0 +1,48 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { SOON, socials } from "../data/site";
+import { asset } from "../lib/asset";
+
+const future = ["Відгуки", "Бренди", "Наші партнери", "Новини", "Акції", "Кошик", "Увійти", "Ru", "Оферта", "Політика конфіденційності"];
+---
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <div class="site-footer__brand">
+      <picture>
+        <source srcset={asset("img/autoklad-logo.webp")} type="image/webp" />
+        <img src={asset("img/autoklad-logo.png")} width="120" height="180" alt="Логотип Автоклад" decoding="async" />
+      </picture>
+      <p><strong>ТОВ «Автоклад»</strong><br />Інтернет-магазин автозапчастин, Київ</p>
+    </div>
+    <nav class="site-footer__nav" aria-label="Інші розділи">
+      <ul>
+        {future.map((f) => <li><FutureLink note={SOON} class="site-footer__future">{f}</FutureLink></li>)}
+      </ul>
+    </nav>
+    <div class="site-footer__meta">
+      <ul class="site-footer__social">
+        {socials.map((s) => <li><a class="rule-link" data-rec="S-R006" href={s.href} target="_blank" rel="noopener">{s.name}</a></li>)}
+      </ul>
+      <p class="muted">Приймаємо картки Visa і Mastercard</p>
+      <p class="muted num">© 2010–2026 Автоклад</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--color-bg); padding-block: var(--s-4); font-size: .9375rem; }
+  .site-footer__inner { display: grid; gap: var(--s-3); }
+  .site-footer__brand { display: flex; align-items: center; gap: var(--s-2); }
+  .site-footer__brand img { width: auto; height: 3rem; }
+  .site-footer__nav ul { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; }
+  .site-footer__nav :global(.site-footer__future) { min-height: 2.75rem; color: var(--color-text-muted); text-decoration: underline; text-decoration-style: dashed; text-decoration-color: var(--color-line); text-underline-offset: 4px; }
+  .site-footer__nav :global(.site-footer__future:hover) { color: var(--color-text); }
+  .site-footer__meta { display: grid; gap: .25rem; }
+  .site-footer__social { display: flex; gap: 1.25rem; }
+  .site-footer__social a { display: inline-flex; align-items: center; min-height: 2.75rem; font-weight: 600; }
+
+  @media (min-width: 1024px) {
+    .site-footer__inner { grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) minmax(0, 3fr); align-items: center; column-gap: var(--s-4); }
+    .site-footer__meta { justify-items: end; text-align: right; }
+  }
+</style>
